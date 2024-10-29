@@ -97,7 +97,7 @@
                 <hr>
                 <!-- hr--水平線 -->
 
-            <!-- 第一列，日期 -->
+            <!-- 第1列，日期 -->
                 <div class="row">
                     <div class="col-sm-12">
                         <label>日期</label>
@@ -108,7 +108,7 @@
                 <!-- br--斷點，分開列跟列間距 -->
                 <br>
              
-            <!-- 第二列，機台 -->
+            <!-- 第2列，機台 -->
                 <div class="row">
                     <div class="col-sm-12">
                         <label>機台</label>
@@ -118,7 +118,7 @@
                 
                 <br>
 
-            <!-- 第三列，產品編號 -->
+            <!-- 第3列，產品編號 -->
                 <div class="row">
                     <div class="col-sm-12">
                         <label>產品編號</label>
@@ -127,8 +127,18 @@
                 </div>
 
                 <br>
+            
+            <!-- 第4列，訂單編號 -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>訂單編號</label>
+                    <select id="or" class="form-select" required></select>
+                </div>
+            </div>
 
-            <!-- 第四列，時 -->
+            <br>
+
+            <!-- 第5列，時 -->
                 <div class="row">
                     <div class="col-sm-12">
                         <label>時</label>
@@ -138,7 +148,7 @@
 
                 <br>
 
-            <!-- 第五列，分 -->
+            <!-- 第6列，分 -->
                 <div class="row">
                     <div class="col-sm-12">
                         <label>分</label>
@@ -148,7 +158,7 @@
 
                 <br>
 
-            <!-- 第六列，數量 -->
+            <!-- 第7列，數量 -->
                 <div class="row">
                     <div class="col-sm-12">
                         <label>數量</label>
@@ -158,7 +168,7 @@
 
                 <br>
 
-            <!-- 第七列，備註 -->
+            <!-- 第8列，備註 -->
                 <div class="row">
                     <div class="col-sm-12">
                         <label>備註</label>
@@ -170,7 +180,7 @@
             
                 <hr>
 
-            <!-- 第八列，送出 -->
+            <!-- 第9列，送出 -->
                 <div class="row">
                     <div class="col-sm-12">
                         <button type="submit" id="submitButton" class="btn btn-success">
@@ -223,7 +233,30 @@
                     option.text = item;
                     pdSelect.appendChild(option);
                 });
+
+                // 當產品編號變更時，觸發訂單編號的更新
+                pdSelect.addEventListener("change", function() {
+                    var selectedProduct = pdSelect.value;
+                    populateOrderNumbers(selectedProduct);
+                });
             }
+
+            // 根據選取的產品編號填入訂單編號
+            function populateOrderNumbers(productNumber) {
+                var orSelect = document.getElementById("or");
+                orSelect.innerHTML = ""; // 清空現有選項
+
+                // 使用 Google Apps Script API 抓取對應的訂單編號
+                google.script.run.withSuccessHandler(function(orderNumbers) {
+                    orderNumbers.forEach(function(orderNumber) {
+                        var option = document.createElement("option");
+                        option.value = orderNumber;
+                        option.text = orderNumber;
+                        orSelect.appendChild(option);
+                    });
+                }).getOrderNumbers(productNumber);
+            }
+
 
             // 將機台選項加入下拉選單
             function populate_mc_List(data) {
@@ -246,13 +279,13 @@
 
 
             // 抓輸入的值
-
             function getValues(event) {
                 event.preventDefault(); // 防止表單的預設提交行為
 
                 var dt = document.getElementById("dt");
                 var mc = document.getElementById("mc");
                 var pd = document.getElementById("pd");
+                var or = document.getElementById("or");
                 var hr = document.getElementById("hr");
                 var min = document.getElementById("min");
                 var num = document.getElementById("num");
@@ -264,7 +297,7 @@
                 var formattedDate = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
 
                 // 檢查是否有填寫資料
-                if (pd.value === ""|| mc.value === ""|| hr.value === ""|| min.value === ""|| num.value === "") {
+                if (pd.value === ""|| mc.value === ""|| or.value === ""|| hr.value === ""|| min.value === ""|| num.value === "") {
                     showErrorMessage("資料不完整！");
                     return; // 若值為空白，則停止程式執行
                 }
@@ -275,6 +308,7 @@
                     dt: formattedDate,
                     mc: mc.value,
                     pd: pd.value,
+                    or: or.value,
                     hr: hr.value,
                     min: min.value,
                     num: num.value,
@@ -295,6 +329,7 @@
                 var dtValue = dt.value;
                 var pdValue = pd.value;
                 var mcValue = mc.value;
+                var orValue = or.value;
 
                 // 清除表單上的資料
                 document.getElementById("myForm").reset();
@@ -303,6 +338,7 @@
                 dt.value = dtValue;
                 pd.value = pdValue;
                 mc.value = mcValue;
+                or.value = orValue;
 
             }
 
