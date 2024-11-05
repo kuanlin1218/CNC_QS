@@ -113,5 +113,17 @@ function sortSheet() {
   range.sort([{column: 1, ascending: true}, {column: 3, ascending: true}]);
 }
 
+//刪除最後一筆
+function deleteLastRow() {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("record_sheet");
+    const lastRow = sheet.getLastRow();
 
+    // 若有多於 1 列資料，則刪除最後一列並回傳 true；否則回傳 false
+    if (lastRow > 1) {
+        sheet.deleteRow(lastRow);
+        return true;
+    } else {
+        return false;
+    }
+}
 
