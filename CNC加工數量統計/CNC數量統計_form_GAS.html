@@ -392,9 +392,9 @@
                 if (userConfirmed) {
                     google.script.run.withSuccessHandler(function(result) {
                         if (result) {
-                            showErrorMessage("最後一筆資料已刪除！");
+                            showErrorMessage("已刪除最後一筆資料！");
                         } else {
-                            showErrorMessage("無法刪除最後一筆資料！");
+                            showErrorMessage("已無資料可刪除！");
                         }
                     }).deleteLastRow();
                 }
