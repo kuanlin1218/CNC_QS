@@ -92,6 +92,21 @@
                     border:2px solid rgb(140, 9, 234); /*格子的邊線*/
                 }
 
+                /* 自訂彈出視窗「取消」按鈕樣式 */
+                .btn-custom-cancel {
+                    background-color: #6c757d; /* 深灰色 */
+                    color: #ffffff; /* 白色字體 */
+                    width:100%;
+                }
+
+                /* 自訂彈出視窗「確認」按鈕樣式 */
+                .btn-custom-confirm {
+                    background-color: #245aece7; /* 紅色 */
+                    color: #ffffff; /* 白色字體 */
+                    width:100%;
+                }
+
+
         </style>
 
     </head>
@@ -218,9 +233,27 @@
                 </div>
             </div>
             
-
             </form>   
          </div>
+
+         <!-- 確認刪除的模態框 -->
+            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">確認刪除</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    您確定要刪除最後一筆資料嗎？
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-custom-cancel" data-bs-dismiss="modal">取消</button>
+                    <button type="button" id="confirmDeleteButton" class="btn btn-custom-confirm">確認</button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
 
         <!-- JavaScript程式 -->
@@ -384,20 +417,25 @@
                 }, 3000);
             }
 
+            // 綁定刪除按鈕以顯示確認模態框
             document.getElementById("deleteButton").addEventListener("click", function() {
-                // 顯示二次確認視窗
-                var userConfirmed = confirm("確定要刪除最後一筆資料嗎？");
+                var confirmDeleteModal = new bootstrap.Modal(document.getElementById("confirmDeleteModal"));
+                confirmDeleteModal.show();
+            });
 
-                // 若使用者點擊「確定」，則執行刪除操作
-                if (userConfirmed) {
-                    google.script.run.withSuccessHandler(function(result) {
-                        if (result) {
-                            showErrorMessage("已刪除最後一筆資料！");
-                        } else {
-                            showErrorMessage("已無資料可刪除！");
-                        }
-                    }).deleteLastRow();
-                }
+            // 在確認按鈕點擊後進行刪除
+            document.getElementById("confirmDeleteButton").addEventListener("click", function() {
+                google.script.run.withSuccessHandler(function(result) {
+                    if (result) {
+                        showErrorMessage("最後一筆資料已刪除！");
+                    } else {
+                        showErrorMessage("無法刪除最後一筆資料！");
+                    }
+                }).deleteLastRow();
+
+                // 隱藏模態框
+                var confirmDeleteModal = bootstrap.Modal.getInstance(document.getElementById("confirmDeleteModal"));
+                confirmDeleteModal.hide();
             });
 
         </script>
