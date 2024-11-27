@@ -227,11 +227,15 @@
 
             // 在頁面載入時載入產品編號和機台
             window.onload = function() {
+                //設定昨天日期
+                setYesterdayDate('dt');
+                
                 // 載入產品編號
                 google.script.run.withSuccessHandler(populateProductList).getProductList();
                 
                 // 載入機台
                 google.script.run.withSuccessHandler(populate_mc_List).get_mc_List();
+
             };
 
             // 將產品編號選項加入下拉選單
@@ -403,6 +407,19 @@
                 var confirmDeleteModal = bootstrap.Modal.getInstance(document.getElementById("confirmDeleteModal"));
                 confirmDeleteModal.hide();
             });
+
+            // 定義自動設定昨天日期的函數
+            function setYesterdayDate(inputId) {
+                const today = new Date(); // 取得當前日期
+                //today.setDate(today.getDate() - 1); // 減去一天得到昨天
+                const formattedDate = today.toISOString().slice(0, 10); // 格式化為 YYYY-MM-DD
+                const inputElement = document.getElementById(inputId); // 取得目標輸入框
+                if (inputElement) {
+                    inputElement.value = formattedDate; // 設定日期輸入框的值
+                }
+            }
+
+
 
         </script>
    
