@@ -165,19 +165,6 @@
                     letter-spacing: 1px; /*文字間距*/
                     font-weight:600; /*字體粗細100-900*/
                 }
-                
-                /* span-igt */
-                .container-2 .igt {
-                    background-color: none; 
-                    color: rgb(11, 148, 4);
-                    width: 8%;
-                    align-items: center;
-                    justify-content: center;
-                    text-align: center; 
-                    font-size: 18px; 
-                    letter-spacing: 1px; /*文字間距*/
-                    font-weight:600; /*字體粗細100-900*/
-                }
 
                 /* input */
                 .container-2 .custom{
@@ -191,17 +178,6 @@
                     height: 50px;
                 }
 
-                /* 日期input */
-                .container-2 .customd{
-                    background-color: none; 
-                    text-align: center; /*文字置中*/
-                    align-items: center;
-                    justify-content: center;
-                    text-align-last: center; /* 修正選中的文字置中 */
-                    appearance: none; /* 移除瀏覽器預設樣式 (選用) */
-                    font-size: 16px; 
-                    height: 50px;
-                }
 
     /* 表格調整================================================================== */
                 /* 調整表格邊框、欄與列的間距 */
@@ -327,7 +303,7 @@
                     <!-- 第1列，日期 -->
                     <div class="input-group my-3">
                         <span class="input-group-text">日期</span>
-                        <input type="text" id="dt" class="form-control custom" placeholder="YYYY/MM/DD" required>
+                        <input type="date" id="dt" class="form-control custom" placeholder="YYYY/MM/DD" required>
                     </div>
 
                     <!-- 第2列，產品編號 -->
@@ -413,10 +389,13 @@
                     <!-- hr--水平線 -->
                     <!-- 日期 -->
                     <div class="input-group my-3">
-                        <span class="input-group-text">日期</span>
-                        <input type="text" id="dt1" class="form-control customd" placeholder="YYYY/MM/DD" required>
-                        <span class="input-group-text igt">到</span>
-                        <input type="text" id="dt2" class="form-control customd" placeholder="YYYY/MM/DD" required>
+                        <span class="input-group-text">開始日期</span>
+                        <input type="date" id="dt1" class="form-control custom" placeholder="YYYY/MM/DD" required>
+                    </div>
+
+                    <div class="input-group my-3">
+                        <span class="input-group-text">結束日期</span>
+                        <input type="date" id="dt2" class="form-control custom" placeholder="YYYY/MM/DD" required>
                     </div>
 
                     <!-- 產品編號 -->
